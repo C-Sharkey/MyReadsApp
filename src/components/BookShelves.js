@@ -1,9 +1,11 @@
 import React from 'react';
 import BookShelf from './BookShelf.js';
+import { Link } from 'react-router-dom';
+
 
 const BookShelves = props => {
-const {books} = props;
-
+    const {books} = props;
+   
         return (
                 <div className="list-books">
                     <div className="list-books-title">
@@ -11,16 +13,26 @@ const {books} = props;
                     </div>
                     <div className="list-books-content"> 
                         <div>
-                            <BookShelf books={books} shelfTitle='Currently Reading'/>
-                            <BookShelf books={books} shelfTitle='Want to Read'/>
-                            <BookShelf books={books} shelfTitle='Read'/>
+                            <BookShelf 
+                                books={books} 
+                                category='currentlyReading' 
+                                shelfTitle='Currently Reading'/>
+                            <BookShelf 
+                                books={books} 
+                                category='wantToRead' 
+                                shelfTitle='Want to Read'/>
+                            <BookShelf 
+                                books={books} 
+                                category='read' 
+                                shelfTitle='Read'/>
                         </div>
                     </div>
                     <div className="open-search">
-                        <button 
-                            onClick={() => this.setState({ showSearchPage: true })}>
-                                Add a book
-                        </button>
+                        <Link to="/add">
+                            <button> 
+                                Add Book
+                            </button>
+                        </Link>                        
                     </div>
                 </div>
         )

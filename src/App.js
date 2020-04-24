@@ -3,7 +3,6 @@ import BookShelves from './components/BookShelves.js';
 import BookSearch from './components/BookSearch.js';
 import * as BooksAPI from './BooksAPI';
 import './App.css';
-import PropTypes from 'prop-types';
 import { Route } from 'react-router-dom';
 
 class BooksApp extends React.Component {
@@ -20,6 +19,17 @@ class BooksApp extends React.Component {
       })
   }
 
+  moveBook = (book, shelf) => {
+    book.shelf = shelf;
+    this.setState(state => ({
+      books: state
+        .books
+        .filter(b => b.id !== book.id)
+        .concat([book])
+    }))
+    BooksAPI.update(book, shelf)
+  }
+
 
   render() {
     console.log(this.state.books);
@@ -29,13 +39,17 @@ class BooksApp extends React.Component {
         <Route 
           exact path='/' 
           render = {() => (
-            <BookShelves books={this.state.books} />
+            <BookShelves 
+              books={this.state.books}
+               />
           )}
         />
         <Route 
           path='/add' 
           render={() => (
-            <BookSearch />
+            <BookSearch 
+              books={this.state.books}
+            />
           )}
         />
       </div>

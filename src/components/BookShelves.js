@@ -3,9 +3,9 @@ import BookShelf from './BookShelf.js';
 import { Link } from 'react-router-dom';
 
 
+// Displays the 3 shelves
 const BookShelves = props => {
-    const {books} = props;
-   
+    const {books, moveBook} = props;
         return (
                 <div className="list-books">
                     <div className="list-books-title">
@@ -16,15 +16,22 @@ const BookShelves = props => {
                             <BookShelf 
                                 books={books} 
                                 category='currentlyReading' 
-                                shelfTitle='Currently Reading'/>
+                                shelfTitle='Currently Reading'
+                                moveBook={moveBook}
+                                />
+
                             <BookShelf 
                                 books={books} 
                                 category='wantToRead' 
-                                shelfTitle='Want to Read'/>
+                                shelfTitle='Want to Read'
+                                moveBook={moveBook}
+                                />
                             <BookShelf 
                                 books={books} 
                                 category='read' 
-                                shelfTitle='Read'/>
+                                shelfTitle='Read'
+                                moveBook={moveBook}
+                                />
                         </div>
                     </div>
                     <div className="open-search">

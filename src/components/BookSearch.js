@@ -4,13 +4,15 @@ import * as BooksAPI from '../BooksAPI';
 import { Link } from 'react-router-dom';
 import {DebounceInput} from 'react-debounce-input';
 
+// Used debouce to help with search field
+
 class BookSearch extends Component {
-   
+    
     state = {
         query: '',
         bookSearch: [],
     }
-    
+    // updates the search query
     saveQuery = (event) => {
         const query = event.target.value;
         if (!query) {
@@ -20,22 +22,38 @@ class BookSearch extends Component {
             this.setState({query: query});
         }
     }
-
-
-
-render () {
-        console.log('Booksearch::: ' + this.state.bookSearch);
-        
-        const { query, bookSearch } = this.state;
-        
-        const showResults = query === ''
-            ? bookSearch
-            : BooksAPI.search(this.state.query)
+    // takes the query and searches if not empty 
+    showResults (query, moveBook) {
+        if (query === '') {
+            return (<p> Sorry. No results found... </p>);
+        } else {
+            BooksAPI.search(query)
                 .then((bookSearch) => {
                 this.setState(() => ({
                     bookSearch
-            }))
-        })
+                }))
+            })
+            // Tried to stop the error if no search results were found but didnt work
+            if (this.state.bookSearch != null) {
+                console.log('this.state.bookSearch: ' + this.state.bookSearch)
+                return (
+                    this.state.bookSearch.map(result => (
+                    <BookCard 
+                        key={result.id} 
+                        book={result}
+                        moveBook={moveBook} />  
+                    ))
+                )   
+            } else {
+                return (<p> Sorry. No results found for: {query} </p>)
+            }            
+        }
+    }
+
+
+render () {        
+        const { query } = this.state;
+        const {moveBook} = this.props;
                   
         return (
                 <div className="search-books">
@@ -50,8 +68,8 @@ render () {
                         <DebounceInput
                             type="text" 
                             placeholder="Search by title or author"
-                            minLength={4}
-                            debounceTimeout={500}
+                            minLength={3}
+                            debounceTimeout={350}
                             onChange={this.saveQuery} />
 
                         </div>
@@ -59,10 +77,7 @@ render () {
                     <div className="search-books-results">
                         <h2 className="bookshelf-title">Results</h2>
                         <ol className="books-grid">
-                            { showResults?
-                            bookSearch.map(result => (
-                                <BookCard key={result.id} book={result} />  
-                            )) : <p> No results found </p> }    
+                            {this.showResults (query, moveBook)}      
                         </ol>
                     </div>
                 </div>

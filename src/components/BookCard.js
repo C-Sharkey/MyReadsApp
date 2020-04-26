@@ -1,9 +1,9 @@
 import React from 'react';
 import BookChanger from './BookChanger.js';
 
+// Displays a book card
 const BookCard = props => {
-const {book} = props;
-
+const {book, moveBook} = props;
         return (
             <li>
                 <div className="book">                   
@@ -17,7 +17,7 @@ const {book} = props;
                         </div>
                         <BookChanger 
                             book={book}
-                            moveBook={props.moveBook}/>            
+                            moveBook={moveBook}/>            
                     </div>         
                     <div className="book-title">{book.title}</div>
                     <div className="book-authors">{book.authors}</div>             

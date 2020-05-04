@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 // Displays the 3 shelves
 const BookShelves = props => {
     const {books, moveBook} = props;
+    
         return (
                 <div className="list-books">
                     <div className="list-books-title">

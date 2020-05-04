@@ -2,6 +2,11 @@ import React, { Component }  from 'react';
 
 // Displays the changer button and options
 class BookChanger extends Component {
+
+    state = {
+        value: this.props.shelf,
+    };
+
     // sets default to none if book doesnt have a shelf prop
     checkShelf (shelf) {
       if(shelf != null){
@@ -10,15 +15,22 @@ class BookChanger extends Component {
           return 'none'
       } 
     } 
+
+    eventHandler = (e) => {
+        const { newValue } = e.target;
+        this.setState({ newValue });
+        this.props.moveBook(this.props.book, e.target.value);
+    };
+
     
     render () {
-        const {book, moveBook} = this.props;
+        const {book} = this.props;
 
             return (
                 <div className="book-shelf-changer">
                     <select 
-                        onChange={event => moveBook(book, event.target.value)}
-                        defaultValue={this.checkShelf(book.shelf )}>
+                        onChange={this.eventHandler}
+                        value={this.checkShelf(book.shelf )}>
 
                         <option value="move" disabled>Move to...</option>
                         <option value="currentlyReading">Currently Reading</option>

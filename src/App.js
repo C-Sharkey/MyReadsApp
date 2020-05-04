@@ -6,45 +6,74 @@ import './App.css';
 import { Route } from 'react-router-dom';
 
 
-  // Most of the functionality is working but there were a few issues I noticed but could not fix
-  //     1 - The search throws an error if no results are found
-  //     2 - The search books do move to the home page but the state is not updated (you have to refresh)
-  //     3 - The books are still in search if they are on your shelf
-
 class BooksApp extends React.Component {
   state = {
     books: [],
-  }
+    bookSearch: [],
+    error: false,
+  };
 
   // gets reading list and stores in state
   componentDidMount() {
     BooksAPI.getAll()
       .then((books) => {
-        this.setState(() => ({
-          books
-        }))
+        this.setState({ books: books });
       })
-  }
+      .catch(error => {
+        console.log('API Error: ', error);
+        this.setState({ error: true });
+      });
+  };
 
   // Moves books to shelves
   moveBook = (book, shelf) => {
-       this.setState(state => ({
-        book: book.shelf = shelf 
-      }))
-      BooksAPI.update(book, shelf);
-    } 
+    BooksAPI.update(book, shelf).catch(error => {
+      console.log('API error: ', error);
+      this.setState({error : true });
+    });
+    if (shelf === 'none') {
+      this.setState(prevState => ({
+        books: prevState.books.filter(b => b.id !== book.id)
+      }));
+    } else {
+      book.shelf = shelf;
+      this.setState(prevState => ({
+        books: prevState.books.filter(b => b.id !== book.id).concat(book)
+      }));
+    }
+  };
+
   
+  // Search for books
+  searchForBooks = (query) => {
+    if (query.length > 0) {
+      BooksAPI.search(query).then(books => {
+        if (books.error) {
+          this.setState({ bookSearch: [] });
+        } else {
+          this.setState({ bookSearch: books });
+        }
+      });
+    } else {
+      this.setState({ bookSearch: [] });
+    }
+  };
+
+  // Clear Search
+  clearSearch = () => {
+    this.setState({ bookSearch: [] });
+  }
 
   render() {
-    const moveBook = this.moveBook;
+    const {books, bookSearch } = this.state;
     return (
       <div className="app">
         <Route 
           exact path='/' 
           render = {() => (
             <BookShelves 
-              books={this.state.books}
-              moveBook = {moveBook}
+              books={books}
+              moveBook = {this.moveBook}
                />
           )}
         />
@@ -52,8 +81,11 @@ class BooksApp extends React.Component {
           path='/search' 
           render={() => (
             <BookSearch 
+              bookSearch = {bookSearch}
+              searchForBooks = {this.searchForBooks}
+              clearSearch = {this.clearSearch}
+              moveBook = {this.moveBook}
               books={this.state.books}
-              moveBook = {moveBook}
             />
           )}
         />

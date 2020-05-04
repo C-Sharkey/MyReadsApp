@@ -2,8 +2,7 @@ import React from 'react';
 import BookChanger from './BookChanger.js';
 
 // Displays a book card
-const BookCard = props => {
-const {book, moveBook} = props;
+const BookCard = ({ book, moveBook }) => {
         return (
             <li>
                 <div className="book">                   

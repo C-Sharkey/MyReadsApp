@@ -5,8 +5,11 @@ import * as BooksAPI from './BooksAPI';
 import './App.css';
 import { Route } from 'react-router-dom';
 
-
 class BooksApp extends React.Component {
+  // stores three values:
+    // 1: 'books' which is the current books on each shelf
+    // 2. 'bookSearch' which is the books returned from a book search
+    // 3. 'error' which is a boolean that controls displaying logs if there is an error with API
   state = {
     books: [],
     bookSearch: [],
@@ -59,7 +62,7 @@ class BooksApp extends React.Component {
     }
   };
 
-  // Clear Search
+  // Clears Search when back button is clicked
   clearSearch = () => {
     this.setState({ bookSearch: [] });
   }

@@ -2,15 +2,18 @@ import React, { Component} from 'react';
 import BookCard from './BookCard.js';
 import { Link } from 'react-router-dom';
 import {DebounceInput} from 'react-debounce-input';
-
 // Used debouce to help with search field
 
 
 class BookSearch extends Component {
+    // stores the search query
     state = { 
         query: '',
      };
 
+    // handles changes to input
+     // sets query state to new input
+     // calls searchForBook function and passed query
      eventHandler = (e) => {
         const searchQuery = e.target.value;
         this.setState({ query: searchQuery }, () => {
@@ -20,7 +23,8 @@ class BookSearch extends Component {
 
 render(){
     const { books, clearSearch, moveBook , bookSearch} = this.props;
-       
+    
+    // maps through bookSearch array and returns books match book ID    
     const searchResults = bookSearch.map(book => {
         books.map(b => {
             if (b.id === book.id) {

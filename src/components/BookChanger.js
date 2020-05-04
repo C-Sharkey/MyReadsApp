@@ -3,6 +3,7 @@ import React, { Component }  from 'react';
 // Displays the changer button and options
 class BookChanger extends Component {
 
+    // stores shelf value
     state = {
         value: this.props.shelf,
     };
@@ -15,7 +16,7 @@ class BookChanger extends Component {
           return 'none'
       } 
     } 
-
+    // handles change to shelf
     eventHandler = (e) => {
         const { newValue } = e.target;
         this.setState({ newValue });

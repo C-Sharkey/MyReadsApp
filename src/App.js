@@ -20,7 +20,7 @@ class BooksApp extends React.Component {
   componentDidMount() {
     BooksAPI.getAll()
       .then((books) => {
-        this.setState({ books: books });
+        this.setState({ books });
       })
       .catch(error => {
         console.log('API Error: ', error);
@@ -58,7 +58,7 @@ class BooksApp extends React.Component {
         }
       });
     } else {
-      this.setState({ bookSearch: [] });
+      this.clearSearch();
     }
   };
 

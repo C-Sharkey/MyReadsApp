@@ -6,7 +6,21 @@ import { Link } from 'react-router-dom';
 // Displays the 3 shelves
 const BookShelves = props => {
     const {books, moveBook} = props;
-    
+    const shelfNames = [
+        {
+            shelfName: 'Currently Reading',
+            category: 'currentlyReading'
+        },
+        {
+            shelfName: 'Want To Read',
+            category: 'wantToRead'
+        },
+        {
+            shelfName: 'Read',
+            category: 'read'
+        },        
+    ];
+
         return (
                 <div className="list-books">
                     <div className="list-books-title">
@@ -14,25 +28,14 @@ const BookShelves = props => {
                     </div>
                     <div className="list-books-content"> 
                         <div>
+                        { shelfNames.map(shelf =>
                             <BookShelf 
                                 books={books} 
-                                category='currentlyReading' 
-                                shelfTitle='Currently Reading'
+                                category={shelf.category} 
+                                shelfTitle={shelf.shelfName}
                                 moveBook={moveBook}
-                                />
-
-                            <BookShelf 
-                                books={books} 
-                                category='wantToRead' 
-                                shelfTitle='Want to Read'
-                                moveBook={moveBook}
-                                />
-                            <BookShelf 
-                                books={books} 
-                                category='read' 
-                                shelfTitle='Read'
-                                moveBook={moveBook}
-                                />
+                            />                          
+                        )}
                         </div>
                     </div>
                     <div className="open-search">
